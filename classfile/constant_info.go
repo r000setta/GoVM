@@ -23,12 +23,42 @@ type ConstantInfo interface {
 
 func readConstantInfo(reader *ClassReader, cp ConstantPool) ConstantInfo {
 	tag := reader.readUint8()
-	c := newConstat
+	c := newConstantInfo(tag, cp)
+	c.readInfo(reader)
+	return c
 }
 
 func newConstantInfo(tag uint8, cp ConstantPool) ConstantInfo {
 	switch tag {
 	case CONSTANT_Intger:
-		return
+		return &ConstantIntegerInfo{}
+	case CONSTANT_Float:
+		return &ConstantFloatInfo{}
+	case CONSTANT_Long:
+		return &ConstantLongInfo{}
+	case CONSTANT_Double:
+		return &ConstantDoubleInfo{}
+	case CONSTANT_Utf8:
+		return &ConstantUtf8Info{}
+	case CONSTANT_String:
+		return &ConstantStringInfo{}
+	case CONSTANT_Fieldref:
+		return &ConstantFieldRefInfo{ConstantMemberRefInfo{Cp: cp}}
+	case CONSTANT_Class:
+		return &ConstantClassInfo{cp: cp}
+	case CONSTANT__MethodRef:
+		return &ConstantMethodRefInfo{ConstantMemberRefInfo{Cp: cp}}
+	case CONSTANT_InterfaceMethodref:
+		return &ConstantInterfaceRefInfo{ConstantMemberRefInfo{Cp: cp}}
+	case CONSTANT_NameandType:
+		return &ConstantNameAndType{}
+	//case CONSTANT_MethodType:
+	//	return &ConstTypeI
+	//case CONSTANT_MethodHandle:
+	//	return &
+	//case CONSTANT_InvokeDynamic:
+	//	return
+	default:
+		panic("Constant pool error!")
 	}
 }
