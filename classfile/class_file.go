@@ -3,7 +3,7 @@ package classfile
 import "fmt"
 
 type ClassFile struct {
-	Magic        uint32
+	//Magic        uint32
 	MinorVersion uint16
 	MajorVersion uint16
 	ConstantPool ConstantPool
@@ -34,6 +34,7 @@ func (self *ClassFile) readAndCheckVersion(reader *ClassReader) {
 			return
 		}
 	}
+	return
 	panic("Version error!")
 }
 
@@ -66,23 +67,23 @@ func (self *ClassFile) read(reader *ClassReader) {
 	self.Attributes = readAttributes(reader, self.ConstantPool)
 }
 
-func (self *ClassFile) getMajorVersion() uint16 {
+func (self *ClassFile) GetMajorVersion() uint16 {
 	return self.MajorVersion
 }
 
-func (self *ClassFile) getMinorVersion() uint16 {
+func (self *ClassFile) GetMinorVersion() uint16 {
 	return self.MinorVersion
 }
 
-func (self *ClassFile) getAccessFlag() uint16 {
+func (self *ClassFile) GetAccessFlag() uint16 {
 	return self.AccessFlag
 }
 
-func (self *ClassFile) getFields() []*MemberInfo {
+func (self *ClassFile) GetFields() []*MemberInfo {
 	return self.Fields
 }
 
-func (self *ClassFile) getMethods() []*MemberInfo {
+func (self *ClassFile) GetMethods() []*MemberInfo {
 	return self.Methods
 }
 
